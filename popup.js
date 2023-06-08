@@ -1,27 +1,28 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var toggleSwitch = document.getElementById("toggleSwitch");
+    var toggleAdBlock = document.getElementById("toggleAdBlock");
+    var toggleAlternativeAds = document.getElementById("toggleAlternativeAds");
   
-    chrome.storage.sync.get("isExtensionActive", function (data) {
-      var isExtensionActive = data.isExtensionActive;
+    chrome.storage.sync.get(
+      { isAdBlockEnabled: true, isAlternativeAdsEnabled: false },
+      function (data) {
+        var isAdBlockEnabled = data.isAdBlockEnabled;
+        var isAlternativeAdsEnabled = data.isAlternativeAdsEnabled;
   
-      if (isExtensionActive === undefined) {
-        // Default value if not set before
-        isExtensionActive = true;
-        chrome.storage.sync.set({ isExtensionActive: isExtensionActive });
+        toggleAdBlock.checked = isAdBlockEnabled;
+        toggleAlternativeAds.checked = isAlternativeAdsEnabled;
       }
+    );
   
-      toggleSwitch.classList.toggle("on", isExtensionActive);
+    toggleAdBlock.addEventListener("change", function () {
+      var isAdBlockEnabled = toggleAdBlock.checked;
+      chrome.storage.sync.set({ isAdBlockEnabled: isAdBlockEnabled });
+      chrome.runtime.sendMessage({ toggleAdBlock: isAdBlockEnabled });
+    });
   
-      toggleSwitch.addEventListener("click", function () {
-        isExtensionActive = !isExtensionActive;
-        toggleSwitch.classList.toggle("on", isExtensionActive);
-        chrome.storage.sync.set({ isExtensionActive: isExtensionActive });
-  
-        // Send message to content script to toggle extension state
-        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-          chrome.tabs.sendMessage(tabs[0].id, { toggleExtension: isExtensionActive ? "on" : "off" });
-        });
-      });
+    toggleAlternativeAds.addEventListener("change", function () {
+      var isAlternativeAdsEnabled = toggleAlternativeAds.checked;
+      chrome.storage.sync.set({ isAlternativeAdsEnabled: isAlternativeAdsEnabled });
+      chrome.runtime.sendMessage({ toggleAlternativeAds: isAlternativeAdsEnabled });
     });
   });
   
