@@ -1,0 +1,13 @@
+{
+  "manifest_version": 2,
+  "name": "Remove Element Extension",
+  "version": "1.0",
+  "description": "A Chrome extension to remove a specific HTML element from web pages.",
+  "permissions": ["activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"]
+    }
+  ]
+}
