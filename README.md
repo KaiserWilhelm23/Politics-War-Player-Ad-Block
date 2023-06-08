@@ -24,7 +24,7 @@ Once the extension is installed and activated, it will automatically remove spec
 
 To test the extension, visit the Politics & War website. You should notice that the targeted elements, such as player advertisement images or divs, will be removed from the web page.
 
-#Customization
+# Customization
 By default, the extension is configured to remove the specified elements related to player advertisements. If you wish to modify the targeted elements, you can make changes to the content.js file inside the extension folder.
 
 In the content.js file, you will find JavaScript code that identifies and removes the specified elements. You can modify this code to target different elements based on your preferences.
